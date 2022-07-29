@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>8_ajax取消请求</title>
+    <style>
+        div {
+            width: 400px;
+            height: 100px;
+            border: 1px solid pink;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h3>给页面是测试：8_ajax取消请求</h3>
+    <h4>只有get请求才有问题</h4>
+    <button id="btn">点我发送请求(原生js-ajax-get)</button>
+    <button id="btn2">取消请求</button>
+    <div></div>
+
+    <script>
+        const btn = document.querySelector('#btn');
+        const btn2 = document.querySelector('#btn2');
+        const div = document.querySelector('div');
+
+        let xhr = null;
+        btn.onclick = () => {
+            // 实例xhr
+            xhr = new XMLHttpRequest();
+
+            // 绑定监听
+            xhr.onreadystatechange = () => {
+                // 判断状态码
+                if (xhr.readyState === 4) {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        const { name, age, sex } = xhr.response;
+                        div.innerHTML = (`
+                            <ul>
+                                <li>${name}</li>
+                                <li>${age}</li>
+                                <li>${sex}</li>
+                            </ul>
+                        `);
+                    }
+                }
+            }
+
+            // 配置请求
+            xhr.open('GET', 'http://127.0.0.1:8080/test_person_delay');
+
+            xhr.responseType = "json";
+
+            // 当 request 遭遇错误时触发
+            xhr.onerror = () => {
+                alert('当前网络不稳定，请稍后再试');
+            }
+
+            // 超时时间
+            xhr.timeout = 2000;
+
+            // 超时的回调
+            xhr.ontimeout = () => {
+                alert('您的网络不太稳定，请切换后重试~');
+            }
+
+            // 发送请求
+            xhr.send();
+            xhr.abort();
+        }
+
+        btn2.onclick = () => {
+            // 取消请求
+            xhr.abort();
+        }
+    </script>
+</body>
+
+</html>
