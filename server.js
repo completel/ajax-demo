@@ -22,6 +22,20 @@ app.get('/test_get2/:name/:age', (request, response) => {
     response.send('HELLO AJAX TWO');
 })
 
+app.get('/test_person', (request, response) => {
+    console.log('有人请求了test_post2了');
+    const person = { name: '桔梗子', age: 18, sex: "女" };
+    response.send(JSON.stringify(person));
+})
+
+app.get('/test_person_delay', (request, response) => {
+    console.log('有人请求了test_person_delay了');
+    const person = { name: '桔梗', age: 18, sex: "女" };
+    setTimeout(() => {
+        response.send(JSON.stringify(person));
+    }, 3000);
+})
+
 app.post('/test_post', (request, response) => {
     console.log('有人请求了test_post了', request.body);
     response.send('HELLO POST');
