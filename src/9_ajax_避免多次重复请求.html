@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>9_ajax_避免多次重复请求</title>
+    <style>
+        div {
+            width: 400px;
+            height: 100px;
+            border: 1px solid pink;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h3>给页面是测试：9_ajax_避免多次重复请求</h3>
+    <h4>只有get请求才有问题</h4>
+    <button id="btn">点我发送请求(原生js-ajax-get)</button>
+    <div></div>
+
+    <script>
+        const btn = document.querySelector('#btn');
+        const div = document.querySelector('div');
+
+        let isLoading;
+        let xhr;
+        btn.onclick = () => {
+            if (isLoading) xhr.abort();
+            // 实例xhr
+            xhr = new XMLHttpRequest();
+
+            // 绑定监听
+            xhr.onreadystatechange = () => {
+                // 判断状态码
+                if (xhr.readyState === 4) {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        isLoading = false;
+                        const { name, age, sex } = xhr.response;
+                        div.innerHTML = (`
+                            <ul>
+                                <li>${name}</li>
+                                <li>${age}</li>
+                                <li>${sex}</li>
+                            </ul>
+                        `);
+                    }
+                }
+            }
+
+            // 配置请求
+            xhr.open('GET', 'http://127.0.0.1:8080/test_person_delay');
+
+            xhr.responseType = "json";
+
+            // 发送请求
+            xhr.send();
+            isLoading = true;
+        }
+    </script>
+</body>
+
+</html>
