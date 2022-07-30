@@ -9,6 +9,7 @@
 </head>
 
 <body>
+    <h3>当前页面一定不要用服务器去打开，因为要制造跨域问题，用jsonp去解决</h3>
     <button id="btn">点我获取数据</button>
 
     <script>
@@ -18,14 +19,16 @@
             // 创建节点
             const scriptNode = document.createElement('script');
             // 给节点指定src属性
-            scriptNode.src = 'http://127.0.0.1:8080/test_jsonp';
+            scriptNode.src = 'http://127.0.0.1:8080/test_jsonp?callback=test';
             // 放入页面
             document.body.appendChild(scriptNode);
-            window.demo = (person) => {
+            window.test = (person) => {
                 console.log(person);
             }
-        }
 
+            // 移出已经使用的script标签
+            document.body.removeChild(scriptNode);
+        }
     </script>
 
 </body>

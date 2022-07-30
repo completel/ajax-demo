@@ -17,11 +17,12 @@ app.get('/test_get', (request, response) => {
 })
 
 app.get('/test_jsonp', (request, response) => {
+    const { callback } = request.query;
     const person = [
         { id: '1', name: '桔梗', age: 18 },
         { id: '2', name: '张三', age: 19 },
     ];
-    response.send(`demo(${JSON.stringify(person)})`);
+    response.send(`${callback}(${JSON.stringify(person)})`);
 })
 
 // 响应GET请求----可以接受params参数
