@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>13_put请求</title>
+</head>
+
+<body>
+    <h3>13_put请求</h3>
+    <button id="btn">点我获取数据</button>
+    <div></div>
+
+    <script>
+        const btn = document.querySelector('#btn');
+
+        btn.onclick = () => {
+            // xhr实例对象
+            const xhr = new XMLHttpRequest();
+
+            xhr.onreadystatechange = () => {
+                if (xhr.readyState === 4) {
+                    if (xhr.status >= 200 && xhr.status < 300) {
+                        console.log(xhr.response);
+                    }
+                }
+            }
+
+            xhr.open('PUT', 'http://127.0.0.1:8080/test_put');
+            xhr.send();
+        }
+    </script>
+
+</body>
+
+</html>
